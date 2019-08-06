@@ -1,0 +1,10 @@
+
+MS-thesis.pdf
+*.aux
+*.lof
+*.log
+*.lot
+MS-thesis.synctex.gz
+*.out
+*.toc
+.DS_Store

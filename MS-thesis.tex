@@ -1,0 +1,193 @@
+\documentclass[12pt,oneside,letterpaper,chapterprefix=on,numbers=noenddot]{scrbook}
+%%%%%%%%%%%%
+% LaTeX template for M.S. thesis at CSU Long Beach
+% see https://github.com/ThomasGredig for latest version
+%%%%%%%%%%%%
+
+%%%%%%%%%%%%% page set-up 
+\usepackage[margin=1in,includefoot,heightrounded]{geometry} % 1 inch margins including page numbers
+\usepackage{mathptmx} 		% times new roman
+\usepackage{setspace} 		% double spacing in text, not captions or footnotes
+\doublespacing  			%\onehalfspacing
+\usepackage{indentfirst} 		% indent first paragraph
+\setlength{\parindent}{2em} 	% adjust indentation 
+\usepackage[document]{ragged2e} % ragged right
+\setlength{\RaggedRightParindent}{\parindent}
+
+%%%%%%%%%%%%% Figure packages
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{pdfpages}
+\usepackage{siunitx}			% allows proper spacing with units use \SI{4e-2}{\micro\meter}
+
+%%%%%%%%%%%%% Captions 
+\usepackage{comment} 		% a convenient package
+\pagestyle{plain} 			% remove headers 
+\usepackage[justification=raggedright,singlelinecheck=false,labelsep=period]{caption} % Captions left justify
+\setkomafont{captionlabel}{\bfseries} 	% make caption label bold
+\setkomafont{caption}{\bfseries} 		% make caption bold
+\setcapindent{0pt} 					% removes hanging indent from captions
+\captionsetup{figurename=FIGURE,tablename=TABLE}
+\usepackage{multirow}
+
+
+%%%%%%%%%%%%% Other Packages 
+\usepackage{chemfig}
+\usepackage{chemformula}		% use \ch{H2Pc} or \ch{C60} 
+\usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	linkcolor=black,
+	urlcolor=black}
+
+
+
+%%% bibliography modifications
+\usepackage[square,sort,comma,numbers,sort&compress]{natbib}
+\setlength{\bibsep}{\baselineskip} % line spacing between citations
+\setlength{\bibhang}{2em} %%% hanging indentation
+\makeatletter
+\renewcommand\NAT@bibsetnum[1]{\settowidth\labelwidth{\@biblabel{#1}}%
+   \setlength{\leftmargin}{\bibindent}\addtolength{\leftmargin}{\dimexpr\labelwidth+\labelsep\relax}%
+   \setlength{\itemindent}{-\bibindent}%
+   \setlength{\listparindent}{\itemindent}
+\setlength{\itemsep}{\bibsep}\setlength{\parsep}{\z@}%
+   \ifNAT@openbib
+     \addtolength{\leftmargin}{\bibindent}%
+     \setlength{\itemindent}{-\bibindent}%
+     \setlength{\listparindent}{\itemindent}%
+     \setlength{\parsep}{0pt}%
+   \fi
+}
+\makeatother
+
+%%% extra code for getting the correct line spacing after references title
+%\let\oldbibliography\bibliography% Store \bibliography in \oldbibliography
+%\renewcommand{\bibliography}[1]{{%
+%  \let\chapter\section% Copy \section over \chapter
+%  \oldbibliography{#1}}}% Old \bibliography
+
+%%% uppercase chapters
+\makeatletter
+\renewcommand\sectionlinesformat[4]{%
+  \@hangfrom{\hskip#2 #3}{\MakeUppercase{#4}}%
+}
+\renewcommand\chapterlinesformat[3]{%
+  \@hangfrom{#2}{\MakeUppercase{#3}}%
+}
+\makeatother
+\renewcommand\chapterlineswithprefixformat[3]{%
+  \MakeUppercase{#2#3}%
+}
+
+%%% continuous table and figure numbering
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+%%% chapter titles
+\let\raggedchapter\centering
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=0pt]{chapter}
+\setkomafont{disposition}{\bfseries\normalsize}
+\setkomafont{chapter}{\normalsize}
+
+%%% section titles
+\let\raggedsection\centering
+\setkomafont{section}{\normalsize} 
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=0.01pt]{section}
+
+%%% remove indentation from captions
+\usepackage{etoolbox}
+\AtBeginEnvironment{figure}{\setlength{\RaggedRightParindent}{0em}}
+\AtBeginEnvironment{table}{\setlength{\RaggedRightParindent}{0em}}
+%\patchcmd{\thebibliography}{\chapter*}
+
+
+%%% modify table of contents
+\usepackage{tocloft}
+\renewcommand{\cftchapaftersnum}{.} % place a period after chapter numbers
+\setlength{\cftbeforetoctitleskip}{0pt} % keep at 1 inch margin 
+\setlength{\cftaftertoctitleskip}{0pt} % keep the double spacing
+\renewcommand*\contentsname{TABLE OF CONTENTS} % rename contents
+\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\normalsize\bfseries} % keep consistent font size
+\renewcommand{\cftaftertoctitle}{\hspace*{\fill}} % center title
+\KOMAoptions{toc=chapterentrydotfill} % dotted chapter entries
+\setkomafont{chapterentry}{} % make chapter titles not bold
+\addtokomafont{chapterentrypagenumber}{\mdseries} % make page numbers not bold
+%%% indents numbered chapters
+\RedeclareSectionCommand[tocnumwidth=3.5em]{chapter}
+\renewcommand\addchaptertocentry[2]{%
+  \ifstr{#1}{}{%
+    \addtocentrydefault{chapter}{#1}{#2}%
+  }{%
+    \addtocentrydefault{chapter}{\hspace*{2em}#1}{#2}%
+}}
+
+%%% list of tables
+\setlength{\cftbeforelottitleskip}{0pt} % keep at 1 inch margin
+\setlength{\cftafterlottitleskip}{0pt} % keep the double spacing
+\renewcommand*\listtablename{LIST OF TABLES} % rename contents
+\renewcommand{\cftlottitlefont}{\hspace*{\fill}\normalsize\bfseries} % keep consistent font size
+\renewcommand{\cftafterlottitle}{\hspace*{\fill}} % center title
+\setlength{\cfttabindent}{0pt}  % remove indentation from tables in lot
+\renewcommand\cfttabafterpnum{\vskip14pt\par}
+
+
+%%% list of figures
+\setlength{\cftbeforeloftitleskip}{0pt} % keep at 1 inch margin
+\setlength{\cftafterloftitleskip}{0pt} % keep the double spacing
+\renewcommand*\listfigurename{LIST OF FIGURES} % rename contents
+\renewcommand{\cftloftitlefont}{\hspace*{\fill}\normalsize\bfseries} % keep consistent font size
+\renewcommand{\cftafterloftitle}{\hspace*{\fill}} % center title
+\setlength{\cftfigindent}{0pt}  % remove indentation from figures in lof
+\renewcommand\cftfigafterpnum{\vskip14pt\par}
+
+%%% set up appendix
+%\usepackage[page,toc,title]{appendix}
+%\renewcommand{\appendixtocname}{APPENDICES}
+\usepackage[toc,title]{appendix}
+\renewcommand{\appendixtocname}{APPENDIX: EXAMPLE OF AN APPENDIX}
+\renewcommand{\appendixpagename}{\vspace*{\fill}\centering\normalsize APPENDICES\vspace*{\fill}}
+
+
+\input{myConfig}
+
+%%%-------------------------------------------------------------------------------%%%
+%%%-------------------------------------------------------------------------------%%%
+%%%-------------------------------------------------------------------------------%%%
+
+\begin{document}
+
+\frontmatter
+	
+\include{title}
+\include{abstract}
+\include{acknowledgements}
+
+\clearpage
+\tableofcontents
+
+\clearpage \addcontentsline{toc}{chapter}{LIST OF TABLES}
+\listoftables
+
+\clearpage \addcontentsline{toc}{chapter}{LIST OF FIGURES}
+\listoffigures
+
+\mainmatter
+\include{manuscript/chapter01}
+\include{manuscript/chapter02}
+\include{manuscript/chapter03}
+\include{manuscript/chapter04}
+
+\clearpage \addcontentsline{toc}{chapter}{REFERENCES} \renewcommand\bibname{REFERENCES \vspace{10 mm}}
+\bibliographystyle{apsrev4-1}
+\bibliography{myZoteroBib} % has extension .bib
+
+
+\end{document}
