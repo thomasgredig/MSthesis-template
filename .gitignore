@@ -8,3 +8,5 @@ MS-thesis.synctex.gz
 *.out
 *.toc
 .DS_Store
+MS-thesis.bbl
+*.blg
