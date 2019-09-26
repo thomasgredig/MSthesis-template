@@ -1,53 +1,50 @@
-\documentclass[12pt,oneside,letterpaper,chapterprefix=on,numbers=noenddot]{scrbook}
-%%%%%%%%%%%%
-% LaTeX template for M.S. thesis at CSU Long Beach
+\documentclass[12pt,oneside,letterpaper,chapterprefix=on,numbers=endperiod]{scrbook}
+% https://www.csulb.edu/sites/default/files/u29386/2019_csulb_format_manual_for_theses_and_dissertations.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Thesis Template for Gredig Research Group
+% at California State University Long Beach
+% (c) 2019 Thomas Gredig, Thomas.Gredig@csulb.edu
+%
 % see https://github.com/ThomasGredig for latest version
-%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%% page set-up 
-\usepackage[margin=1in,includefoot,heightrounded]{geometry} % 1 inch margins including page numbers
-\usepackage{mathptmx} 		% times new roman
-\usepackage{setspace} 		% double spacing in text, not captions or footnotes
-\doublespacing  			%\onehalfspacing
-\usepackage{indentfirst} 		% indent first paragraph
-\setlength{\parindent}{2em} 	% adjust indentation 
-\usepackage[document]{ragged2e} % ragged right
+\usepackage[margin=1in,includefoot,heightrounded]{geometry} 	% 1 inch margins including page numbers
+\usepackage[english]{babel}  								% define language
+\usepackage{amsmath}									% augmented equation and align environments
+
+\usepackage{indentfirst} 									% indent first paragraph
+\setlength{\parindent}{2em} 								% adjust indentation 
+\usepackage[document]{ragged2e} 							% ragged right
 \setlength{\RaggedRightParindent}{\parindent}
+\pagestyle{plain} 										% remove headers 
 
-%%%%%%%%%%%%% Figure packages
+
+%%%%%%%%%%%%% Tables and Figures and Captions
 \usepackage{graphicx}
-\usepackage{wrapfig}
-\usepackage{pdfpages}
-\usepackage{siunitx}			% allows proper spacing with units use \SI{4e-2}{\micro\meter}
-
-%%%%%%%%%%%%% Captions 
-\usepackage{comment} 		% a convenient package
-\pagestyle{plain} 			% remove headers 
+\graphicspath{{../Figs-Generated/}{../Figs/}}					% default paths for FIGURES
+\usepackage{tablefootnote}								% for footnotes in tables
 \usepackage[justification=raggedright,singlelinecheck=false,labelsep=period]{caption} % Captions left justify
-\setkomafont{captionlabel}{\bfseries} 	% make caption label bold
-\setkomafont{caption}{\bfseries} 		% make caption bold
-\setcapindent{0pt} 					% removes hanging indent from captions
+\setkomafont{captionlabel}{\bfseries} 						% make caption label bold
+\setkomafont{caption}{\bfseries} 							% make caption bold
+\setcapindent{0pt} 										% removes hanging indent from captions
 \captionsetup{figurename=FIGURE,tablename=TABLE}
-\usepackage{multirow}
+\usepackage{etoolbox}									% remove indentation from captions
+\AtBeginEnvironment{figure}{\setlength{\RaggedRightParindent}{0em}}
+\AtBeginEnvironment{table}{\setlength{\RaggedRightParindent}{0em}}
+
+\usepackage{chngcntr}									% continuous table and figure numbering
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
 
 
-%%%%%%%%%%%%% Other Packages 
-\usepackage{chemfig}
-\usepackage{chemformula}		% use \ch{H2Pc} or \ch{C60} 
-\usepackage{amsmath}
-\usepackage{hyperref}
-\hypersetup{
-	colorlinks,
-	citecolor=black,
-	linkcolor=black,
-	urlcolor=black}
-
-
-
-%%% bibliography modifications
-\usepackage[square,sort,comma,numbers,sort&compress]{natbib}
-\setlength{\bibsep}{\baselineskip} % line spacing between citations
-\setlength{\bibhang}{2em} %%% hanging indentation
+%%%%%%%%%%%%% Bibliography
+\bibliographystyle{apsrev4-1}								% bibliography APS style
+\usepackage[square,sort,comma,numbers,sort&compress]{natbib} 
+\setlength{\bibsep}{0pt} 									% line spacing between citations
+\setlength{\bibhang}{2em} 								% hanging indentation
 \makeatletter
 \renewcommand\NAT@bibsetnum[1]{\settowidth\labelwidth{\@biblabel{#1}}%
    \setlength{\leftmargin}{\bibindent}\addtolength{\leftmargin}{\dimexpr\labelwidth+\labelsep\relax}%
@@ -63,65 +60,72 @@
 }
 \makeatother
 
-%%% extra code for getting the correct line spacing after references title
-%\let\oldbibliography\bibliography% Store \bibliography in \oldbibliography
-%\renewcommand{\bibliography}[1]{{%
-%  \let\chapter\section% Copy \section over \chapter
-%  \oldbibliography{#1}}}% Old \bibliography
+%%%%%%%%%%%%% Commenting / Editing
+\usepackage[disable,textsize=tiny]{todonotes}   				% disable all todo notes
+\newcommand{\myTodo}[1]{\todo[]{\noindent #1}}
 
-%%% uppercase chapters
+%%%%%%%%%%%%% Physics Packages
+\usepackage{miller}  										% for hkl and notation of <111> etc.
+
+%%%%%%%%%%%%% Other Packages 
+\usepackage{chemfig}
+\usepackage{chemformula}								% use \ch{H2Pc} or \ch{C60} or \ch{CuC32N8H16}
+\usepackage[colorlinks,citecolor=black,linkcolor=black,urlcolor=black]{hyperref}
+
+%%%%%%%%%%%%% Single and Double Spacing 
+\usepackage{setspace} 									% double spacing in text, not captions or footnotes
+\doublespacing  
+\newenvironment{singlespaced}							% title needs single-spacing			
+  {\begin{newspacing}{1}}{\end{newspacing}}
+\newenvironment{newspacing}[1]%
+  {\par\begingroup\newlinestretch{#1}}						% start new line & grouping, change spacing
+  {\par\vskip\parskip\vskip\baselineskip\endgroup
+   \vskip-\parskip\vskip-\baselineskip} 
+\newcommand{\newlinestretch}[1]							% change baselinestretch to new multiplier, reassert text size
+  {\renewcommand{\baselinestretch}{#1}\currenttextsize}
+\let\currenttextsize=\normalsize
+  
+%%%%%%%%%%%%% Section Spacing 
 \makeatletter
 \renewcommand\sectionlinesformat[4]{%
-  \@hangfrom{\hskip#2 #3}{\MakeUppercase{#4}}%
+  \@hangfrom{\hskip#2 #3}{#4} 								%\MakeUppercase{#4}}%
 }
 \renewcommand\chapterlinesformat[3]{%
-  \@hangfrom{#2}{\MakeUppercase{#3}}%
+  \@hangfrom{#2}{#3}%\MakeUppercase{#3}}%
 }
 \makeatother
+\RedeclareSectionCommand[innerskip=0pt]{chapter} 			% spacing below CHAPTER
 \renewcommand\chapterlineswithprefixformat[3]{%
-  \MakeUppercase{#2#3}%
+  \MakeUppercase{#2#3}%								% chapters are uppercase
 }
 
-%%% continuous table and figure numbering
-\usepackage{chngcntr}
-\counterwithout{figure}{chapter}
-\counterwithout{table}{chapter}
-
-%%% chapter titles
-\let\raggedchapter\centering
+\let\raggedchapter\centering								% Chapter centering and spacing
 \RedeclareSectionCommand[
   beforeskip=0pt,
   afterskip=0pt]{chapter}
 \setkomafont{disposition}{\bfseries\normalsize}
 \setkomafont{chapter}{\normalsize}
 
-%%% section titles
-\let\raggedsection\centering
+\let\raggedsection\centering    								% Section centering and spacing
 \setkomafont{section}{\normalsize} 
 \RedeclareSectionCommand[
   beforeskip=0pt,
   afterskip=0.01pt]{section}
+  
+\let\raggedsubsection\flushleft								% SubSection centering and spacing
+\setkomafont{subsection}{\normalsize} 
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=0.01pt]{subsection}
+  
 
-%%% remove indentation from captions
-\usepackage{etoolbox}
-\AtBeginEnvironment{figure}{\setlength{\RaggedRightParindent}{0em}}
-\AtBeginEnvironment{table}{\setlength{\RaggedRightParindent}{0em}}
-%\patchcmd{\thebibliography}{\chapter*}
+%%%%%%%%%%%%% Table of Contents (TOC) 
+\KOMAoptions{toc=chapterentrydotfill} 						% dotted chapter entries
+\setkomafont{chapterentry}{} 								% make chapter titles not bold
+\addtokomafont{chapterentrypagenumber}{\mdseries} 			% make page numbers not bold
+\addto\captionsenglish{\def\contentsname{TABLE OF CONTENTS}} 
 
-
-%%% modify table of contents
-\usepackage{tocloft}
-\renewcommand{\cftchapaftersnum}{.} % place a period after chapter numbers
-\setlength{\cftbeforetoctitleskip}{0pt} % keep at 1 inch margin 
-\setlength{\cftaftertoctitleskip}{0pt} % keep the double spacing
-\renewcommand*\contentsname{TABLE OF CONTENTS} % rename contents
-\renewcommand{\cfttoctitlefont}{\hspace*{\fill}\normalsize\bfseries} % keep consistent font size
-\renewcommand{\cftaftertoctitle}{\hspace*{\fill}} % center title
-\KOMAoptions{toc=chapterentrydotfill} % dotted chapter entries
-\setkomafont{chapterentry}{} % make chapter titles not bold
-\addtokomafont{chapterentrypagenumber}{\mdseries} % make page numbers not bold
-%%% indents numbered chapters
-\RedeclareSectionCommand[tocnumwidth=3.5em]{chapter}
+\RedeclareSectionCommand[tocnumwidth=3em]{chapter}			% indents numbered chapters
 \renewcommand\addchaptertocentry[2]{%
   \ifstr{#1}{}{%
     \addtocentrydefault{chapter}{#1}{#2}%
@@ -129,34 +133,12 @@
     \addtocentrydefault{chapter}{\hspace*{2em}#1}{#2}%
 }}
 
-%%% list of tables
-\setlength{\cftbeforelottitleskip}{0pt} % keep at 1 inch margin
-\setlength{\cftafterlottitleskip}{0pt} % keep the double spacing
-\renewcommand*\listtablename{LIST OF TABLES} % rename contents
-\renewcommand{\cftlottitlefont}{\hspace*{\fill}\normalsize\bfseries} % keep consistent font size
-\renewcommand{\cftafterlottitle}{\hspace*{\fill}} % center title
-\setlength{\cfttabindent}{0pt}  % remove indentation from tables in lot
-\renewcommand\cfttabafterpnum{\vskip14pt\par}
-
-
-%%% list of figures
-\setlength{\cftbeforeloftitleskip}{0pt} % keep at 1 inch margin
-\setlength{\cftafterloftitleskip}{0pt} % keep the double spacing
-\renewcommand*\listfigurename{LIST OF FIGURES} % rename contents
-\renewcommand{\cftloftitlefont}{\hspace*{\fill}\normalsize\bfseries} % keep consistent font size
-\renewcommand{\cftafterloftitle}{\hspace*{\fill}} % center title
-\setlength{\cftfigindent}{0pt}  % remove indentation from figures in lof
-\renewcommand\cftfigafterpnum{\vskip14pt\par}
-
-%%% set up appendix
-%\usepackage[page,toc,title]{appendix}
-%\renewcommand{\appendixtocname}{APPENDICES}
-\usepackage[toc,title]{appendix}
-\renewcommand{\appendixtocname}{APPENDIX: EXAMPLE OF AN APPENDIX}
-\renewcommand{\appendixpagename}{\vspace*{\fill}\centering\normalsize APPENDICES\vspace*{\fill}}
-
-
+%%%%%%%%%%%%% Additional Configuration
 \input{myConfig}
+
+%%%%%%%%%%%%% Glossary 
+\input{glossary.tex}										% use \printunsrtglossary[type=symbols,style=long]
+
 
 %%%-------------------------------------------------------------------------------%%%
 %%%-------------------------------------------------------------------------------%%%
@@ -185,9 +167,15 @@
 \include{manuscript/chapter03}
 \include{manuscript/chapter04}
 
-\clearpage \addcontentsline{toc}{chapter}{REFERENCES} \renewcommand\bibname{REFERENCES \vspace{10 mm}}
-\bibliographystyle{apsrev4-1}
-\bibliography{myZoteroBib} % has extension .bib
+%\clearpage
+%\addcontentsline{toc}{chapter}{REFERENCES}
+%\vspace*{\fill} 
+%\centering 
+%\textbf{REFERENCES}
+%\vspace*{\fill}
 
+\clearpage \phantomsection	
+\addcontentsline{toc}{chapter}{REFERENCES} \renewcommand\bibname{REFERENCES \vspace{10 mm}}
+\bibliography{myZoteroBib} % has extension .bib
 
 \end{document}

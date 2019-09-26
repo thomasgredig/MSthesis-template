@@ -18,19 +18,24 @@
 %%%%%%%%%%%%% DEFINE widths of figures
 \newcommand{\FIGwide}{0.9\textwidth}
 \newcommand{\FIGmed}{0.7\textwidth}
-\newcommand{\FIGnarrow}{0.5\textwidth} 
+\newcommand{\FIGnarrow}{0.5\textwidth}
 
-% SI units
+%%%%%%%%%%%%% SI Units
+\usepackage{gensymb}									% add \celsius and \upmu and proper non-italic symbols
+\usepackage{siunitx}										% allows proper spacing with units use \SI{4e-2}{\micro\meter}
+\sisetup{detect-weight=true, detect-family=true} 				% bold font support
 \DeclareSIUnit\MU{m.u.}
 \DeclareSIUnit\oersted{Oe}
 \DeclareSIUnit\emu{emu}
 \DeclareSIUnit\torr{torr}
+\DeclareSIUnit\bohr{\mu_\text{B}}
+\DeclareSIUnit\fu{\textit{f.u.}}
 
 % hyphenation
 % if there is still a problem, then see:
 % http://thomasgredig.com/index.php/8-latex/2-mathmode-too-long
 \hyphenpenalty=100
-\hyphenation{pho-to-vol-ta-ics 
+\hyphenation{pho-to-vol-ta-ics
 	ani-so-tro-py
 	ani-so-tro-pies
 	phtha-lo-cyan-ine
