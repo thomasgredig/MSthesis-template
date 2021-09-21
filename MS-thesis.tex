@@ -1,11 +1,11 @@
-\documentclass[12pt,oneside,letterpaper,chapterprefix=on,numbers=endperiod]{scrbook}
+\documentclass[12pt,oneside,letterpaper,chapterprefix=on,listof=nochaptergap]{scrbook}
 % https://www.csulb.edu/sites/default/files/u29386/2019_csulb_format_manual_for_theses_and_dissertations.pdf
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Thesis Template for Gredig Research Group
 % at California State University Long Beach
-% (c) 2019 Thomas Gredig, Thomas.Gredig@csulb.edu
+% (c) 2010-2021 Thomas Gredig, Thomas.Gredig@csulb.edu
 %
 % see https://github.com/ThomasGredig for latest version
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,7 +14,7 @@
 \usepackage[margin=1in,includefoot,heightrounded]{geometry} 	% 1 inch margins including page numbers
 \usepackage[english]{babel}  								% define language
 \usepackage{amsmath}									% augmented equation and align environments
-
+\usepackage{subcaption}
 \usepackage{indentfirst} 									% indent first paragraph
 \setlength{\parindent}{2em} 								% adjust indentation 
 \usepackage[document]{ragged2e} 							% ragged right
@@ -40,8 +40,13 @@
 \counterwithout{table}{chapter}
 
 
+\newcommand{\FIGwide}{0.9\textwidth}		% Figure widths (Wide)
+\newcommand{\FIGmed}{0.65\textwidth}		% (medium-sized figure)
+\newcommand{\FIGnarrow}{0.5\textwidth} 	% (narrow figure)
+
+
 %%%%%%%%%%%%% Bibliography
-\bibliographystyle{apsrev4-1}								% bibliography APS style
+\bibliographystyle{apsrev4-2}								% bibliography APS style
 \usepackage[square,sort,comma,numbers,sort&compress]{natbib} 
 \setlength{\bibsep}{0pt} 									% line spacing between citations
 \setlength{\bibhang}{2em} 								% hanging indentation
@@ -60,17 +65,33 @@
 }
 \makeatother
 
+
+%%%%%%%%%%%%% SI Units
+\usepackage{gensymb}									% add \celsius and \upmu and proper non-italic symbols
+\usepackage{siunitx}										% allows proper spacing with units use \SI{4e-2}{\micro\meter}
+\sisetup{detect-weight=true, detect-family=true} 				% bold font support
+\DeclareSIUnit\MU{m.u.}									% machine units
+\DeclareSIUnit\oersted{Oe}
+\DeclareSIUnit\emu{emu}
+\DeclareSIUnit\torr{Torr}
+\DeclareSIUnit\fu{\textit{f.u.}}								% formula unit
+
+
+
 %%%%%%%%%%%%% Commenting / Editing
-\usepackage[disable,textsize=tiny]{todonotes}   				% disable all todo notes
+\usepackage[disable,textsize=tiny]{todonotes}   				% use [disable] to remove all todo notes
 \newcommand{\myTodo}[1]{\todo[]{\noindent #1}}
 
-%%%%%%%%%%%%% Physics Packages
-\usepackage{miller}  										% for hkl and notation of <111> etc.
 
-%%%%%%%%%%%%% Other Packages 
+
+%%%%%%%%%%%%% Physics and Chemistry Packages
+\usepackage{miller}  										% for hkl and notation of <111> etc.
 \usepackage{chemfig}
 \usepackage{chemformula}								% use \ch{H2Pc} or \ch{C60} or \ch{CuC32N8H16}
 \usepackage[colorlinks,citecolor=black,linkcolor=black,urlcolor=black]{hyperref}
+
+
+
 
 %%%%%%%%%%%%% Single and Double Spacing 
 \usepackage{setspace} 									% double spacing in text, not captions or footnotes
@@ -120,9 +141,9 @@
   
 
 %%%%%%%%%%%%% Table of Contents (TOC) 
+\setcounter{tocdepth}{1}
 \KOMAoptions{toc=chapterentrydotfill} 						% dotted chapter entries
-\setkomafont{chapterentry}{} 								% make chapter titles not bold
-\addtokomafont{chapterentrypagenumber}{\mdseries} 			% make page numbers not bold
+\addtokomafont{chapterentry}{\mdseries} % make chapter titles not bold
 \addto\captionsenglish{\def\contentsname{TABLE OF CONTENTS}} 
 
 \RedeclareSectionCommand[tocnumwidth=3em]{chapter}			% indents numbered chapters
@@ -137,8 +158,15 @@
 \input{myConfig}
 
 %%%%%%%%%%%%% Glossary 
-\input{glossary.tex}										% use \printunsrtglossary[type=symbols,style=long]
+% \input{glossary.tex}										% use \printunsrtglossary[type=symbols,style=long]
 
+%%%%%%%%%%%%% Hyphenation 
+%\usepackage[none]{hyphenat}								% for no hyphenation
+\hyphenpenalty=100
+\hyphenation{
+	ani-so-tro-py
+	phtha-lo-cyan-ine
+}
 
 %%%-------------------------------------------------------------------------------%%%
 %%%-------------------------------------------------------------------------------%%%
@@ -153,9 +181,12 @@
 \include{acknowledgements}
 
 \clearpage
+\phantomsection
 \tableofcontents
 
-\clearpage \addcontentsline{toc}{chapter}{LIST OF TABLES}
+\clearpage 
+\phantomsection
+\addcontentsline{toc}{chapter}{LIST OF TABLES}
 \listoftables
 
 \clearpage \addcontentsline{toc}{chapter}{LIST OF FIGURES}
@@ -167,15 +198,10 @@
 \include{manuscript/chapter03}
 \include{manuscript/chapter04}
 
-%\clearpage
-%\addcontentsline{toc}{chapter}{REFERENCES}
-%\vspace*{\fill} 
-%\centering 
-%\textbf{REFERENCES}
-%\vspace*{\fill}
-
-\clearpage \phantomsection	
+\clearpage 
+\phantomsection	
 \addcontentsline{toc}{chapter}{REFERENCES} \renewcommand\bibname{REFERENCES \vspace{10 mm}}
 \bibliography{myZoteroBib} % has extension .bib
 
 \end{document}
+% END - CSULB thesis template
