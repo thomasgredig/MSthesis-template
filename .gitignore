@@ -10,3 +10,8 @@ MS-thesis.synctex.gz
 .DS_Store
 MS-thesis.bbl
 *.blg
+.Rproj.user
+
+/.quarto/
+.RData
+.Rhistory

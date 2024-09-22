@@ -1,0 +1,22 @@
+title: MSthesis-template
+author: Thomas Gredig
+version: 0.1.0
+contributes:
+  format:
+    pdf:
+      documentclass: csulb-msthesis
+      classoption: ["12pt"]
+      template-assets: 
+        - "assets/yaml2tex.tex"
+        - "assets/before-body.tex"
+      toc: false
+      toc-depth: 3
+      include-before-body: 
+        - assets/definitions.tex
+      include-in-header: 
+        - assets/in-header.tex
+      colorlinks: true
+      citecolor: magenta
+      linkcolor: blue
+      urlcolor: red
+      toclinkcolor: black
